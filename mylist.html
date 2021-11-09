@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script>
+			var node = function (data,next){
+				this.data = data;
+				this.next = next;
+				this.setnext = function (next){
+					this.next = next;
+				}
+			}
+			var linkList = function (){
+				this.head = new node(0,null);
+				this.add = function (data){
+					newnode = new node(data,this.head.next);
+					this.head.setnext(newnode);
+				}
+			}
+			
+			dnode = function (data,x,y){
+				this.lastx = x;
+				this.lasty = y;
+				this.nowx;
+				this.nowy;
+				this.data = data;
+				this.updateposition = function (x,y){
+					this.nowx = x;
+					this.nowy = y;
+				}
+				this.cal = function (speed){
+					xd = 1;//1为向左，0为向右
+					if(this.nowx < this.lastx){
+						xd = 0;
+					}
+					nextx = this.nowx + xd*speed;
+					console.log(this.nowx,this.nowy,nextx);
+					this.nowx = nextx;
+				}
+				this.text = function (){
+					return data.toString();
+				}
+			}
+			display = function (link){
+				this.speed = 20;
+				this.leftmargin = 10;
+				this.topmargin = 20;
+				this.interval = 150;
+				this.initx = 600;
+				this.inity = 200;
+				this.width = 1000;
+				this.height = 600;
+				this.data = [];
+				var idx = 0;
+				for(var now = link.head.next; now != null;now = now.next){
+					t = new dnode(now.data,this.leftmargin+this.interval * idx,this.topmargin);
+					t.updateposition(this.leftmargin+this.interval*idx,this.topmargin);
+					this.data.push(t);
+					idx += 1;
+				}
+				this.canvas = document.getElementById("mycanvas").getContext("2d");
+				this.updata = function (){
+					newnode = new dnode(d,this.leftmargin,this.interval*this.data.length,this.topmargin);
+					newnode.updateposition(this.initx,this.inity);
+					this.data.push(newnode);
+				}
+				
+				this.cal = function (){
+					for(let i=0;i<this.data.length;i++){
+						this.data[i].cal(this.speed);
+					}
+				}
+				this.drawnodes = function (nodes){
+					for(let i=0;i<nodes.length;i++){
+						d = nodes[i];
+						this.canvas.strokeStyle="black";
+						this.canvas.strokeRect(d.nowx,d.nowy,100,60);
+					}
+				}
+				this.drawlines = function (nodes){
+					for (let i = 0;i<nodes.length;i++){
+						if (i==nodes.length - 1){
+							break;
+						}
+						nownode = nodes[i];
+						nextnode = nodes[i+1]
+						
+						x = nownode.nowx + 100;
+						y = nownode.nowy + 60/2;
+						x_n = nextnode.nowx;
+						y_n = nextnode.nowy + 60/2;
+						this.canvas.beginPath();
+						this.canvas.moveTo(x,y);
+						this.canvas.lineTo(x_n,y_n);
+						this.canvas.stroke();
+						this.canvas.arc(x_n,y_n,4,0,Math.PI*2,true);
+						this.canvas.fill();
+						this.canvas.closePath();
+					}
+				}
+				this.drawlables = function (nodes){
+					for(let i=0;i<nodes.length;i++){
+						d = nodes[i];
+						this.canvas.strokeText(d.text(),d.nowx+10,d.nowy+20);
+					}
+				}
+				this.render = function (){
+					this.canvas.clearRect(0,0,this.width,this.height);
+					this.drawnodes(this.data);
+					this.drawlines(this.data);
+					this.drawlables(this.data);
+					this.cal();
+				}
+			}
+			var displayer;
+			function begin(){
+				linklist = new linkList;
+				linklist.add(3);
+				linklist.add(2);
+				linklist.add(1);
+				displayer = new display(linklist);
+				time = setInterval(function (){
+					displayer.render();
+				},2000);
+			}
+			function adddata(){
+				displayer.updata(10);
+			}
+		</script>
+	</head>
+	<body>
+		<canvas id="mycanvas" width="1000px" height="600px" style="border: black solid 5px;"></canvas>
+		<button onclick="begin()">开始</button>
+		<button onclick="adddata()">添加链表</button>
+	</body>
+</html>
