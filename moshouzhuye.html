@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>魔兽争霸主页</title>
+		<style>
+			body{
+				background-color: #F5F5DC;
+			}
+			.head{
+				margin: 0px;
+				padding: 0px;
+				text-align: center;
+				font-family: "宋体";
+				font-weight: bold;
+			}
+			.nav{
+				margin: 0px;
+				padding: 0px;
+			}
+			.nav ul{
+				list-style-type: none;
+				text-align: center;
+			}
+			.nav ul li{
+				width: 150px;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+				display: inline-block;
+			}
+			.nav ul li a{
+				text-decoration: none;
+				color: black;
+			}
+			.nav ul li:hover{
+				background-color: antiquewhite;
+			}
+			.nav ul li a:hover{
+				color: red;
+			}
+			
+			.box{ margin:0 auto; height:400px; width:1300px; padding:10px; border:2px solid  #000;}
+			.box img{ margin-right:20px;} 
+			#goleft {width:0 px;height: 400px;overflow: hidden;} 
+			#goleft #gols {width: 30000px;} 
+			#goleft1, #goleft2 {width: auto;float: left;} 
+			
+			
+			.nav input[type="checkbox"] ,
+			.menu{
+			    position: absolute;/*相对于父元素绝对定位*/
+			    left: 2%;
+			    top: 10px;
+			    display:none;/*隐藏不显示*/
+			}
+			@media (max-width: 640px){/*当屏幕小于640px时*/
+			    .header {
+			        padding: 25px 0;
+			    }
+			    .menu {
+			        display: block;/*显示该对象，之前被隐藏*/
+			        cursor: pointer;/*设定鼠标的形状为一只伸出食指的手*/
+			    }
+			    .menu img{
+			        width:100%;
+			    }
+			    .nav > ul {
+			        display: none;
+			    }
+			    .nav input[type="checkbox"]:checked ~ ul {
+			        display: block;
+			    }
+			    .nav ul li {
+			        width: 100%;
+			        display: inline-block;
+			        text-align: center;
+			        margin: 0;
+			        padding:0;
+			    }
+			    .nav ul li a {
+					text-decoration: none;
+			        display:block;
+			        margin: 10px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="head">
+			<h1>魔兽争霸</h1>
+		</div>
+		<div class="header">
+		<div class="nav">
+			<input type="checkbox" id="togglebox" />
+			<ul>
+				<li><a href="juqing.html">魔兽争霸剧情</a></li>
+				<li><a href="tupian.html">魔兽争霸图片</a></li>
+				<li><a href="zhongzu.html">魔兽争霸种族介绍</a></li>
+			</ul>
+			<label class="menu" for="togglebox"><img src="images/menu.png" /></label>
+		</div>
+		</div>
+		<div class="box">
+			<div id="goleft">
+				<div id="gols">
+					<div id="goleft1">
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\1.jpg" alt="1" width="400px" height="400px" />
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\2.jpg" alt="2" width="400px" height="400px" />
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\4.jpg" alt="3" width="400px" height="400px" />
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\5.jpg" alt="4" width="400px" height="400px" />
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\9.jpg" alt="5	" width="400px" height="400px" />
+						<img src="C:\Users\LEGION\Desktop\shiyan7\war3\21.jpg" alt="6" width="400px" height="400px" />
+					</div>
+					<div id="goleft2">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var speed2=20; 
+			var FGgoleft=document.getElementById('goleft'); 
+			var FGgoleft1=document.getElementById('goleft1'); 
+			var FGgoleft2=document.getElementById('goleft2'); 
+			FGgoleft2.innerHTML=FGgoleft1.innerHTML 
+			function Marquee2(){ 
+			if(FGgoleft.offsetWidth-FGgoleft.scrollLeft<=0) 
+			{ 
+			FGgoleft.scrollLeft-=FGgoleft1.offsetWidth 
+			} 
+			else{ 
+			FGgoleft.scrollLeft++; 
+			} 
+			} 
+			var MyMar2=setInterval(Marquee2,speed2) 
+			FGgoleft.onmouseover=function() { clearInterval(MyMar2) } 
+			FGgoleft.onmouseout=function() { MyMar2=setInterval(Marquee2,speed2) } 
+		</script>
+	</body>
+</html>
