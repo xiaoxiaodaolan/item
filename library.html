@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#nav{
+				
+			}
+			.btn{
+				border: 0px;
+				background-color: grey;
+				color: white;
+				font-weight: bold;
+				font-size: large;
+				display: block;
+				margin: 0 auto;
+			}
+			.btn:hover{
+				color: yellow;
+				cursor: pointer;
+			}
+			.top{
+				width: 99%;
+				
+				height: 50px;
+				background-color: grey;
+			}
+			#header{
+				width: 100%;
+				height: 50px;
+				
+				background-color: black;
+				text-align: center;
+			}
+			#header h1 a{
+				text-decoration: none;
+				color: white;
+			}
+			#aside{
+				background-color:grey;
+				float: left;
+				width: 10%;
+				height:100% ;
+			}
+			#all{
+				background-color: white;	
+				float: right;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			/* #header,#content,#nav{
+				border: black solid 1px;
+			} */
+			
+			#div1{
+				position: absolute;
+				width: 1200px;
+				margin: 0 auto;
+				margin-left: 205px;
+			}
+			.table1 td{
+				border: 1px solid black;
+			}
+			.table1{
+				border-collapse: collapse;
+				width: 1000px;
+				float: left;
+			}
+			.table1 td{
+				line-height: 25px;
+				text-align: center;
+			}
+			.table2{
+				width: 200px;
+				border: 1px solid black;
+			}
+			.table2 td p{
+				text-align: center;
+			}
+			.table2 td p input{
+				width: 100px;
+			}
+
+			#div3{
+				/* border: 1px solid black; */
+				margin-left: 205px;
+				height: 50px;
+			}
+			.query{
+				line-height: 50px;
+			}
+			.button1{
+				background-color:deepskyblue;
+				padding: 5px;
+				
+			}
+			.button1:hover{
+				background-color: powderblue;
+			}
+			.input1{
+				width: 500px;
+				line-height: 30px;
+			}
+			.p1{
+				font-size: large;
+				font-weight: bold;
+			}
+			#app{
+				margin-top: 0px;
+			}
+			
+			.content.show{
+			    display:block;
+			}
+			.content{
+			    display: none;
+			}
+		</style>
+	</head>
+	<body>
+			<div id="all">
+				<div id="aside">
+					<div id="header">
+						<h1><a href="library.html">图书管理</a></h1>
+					</div>
+					<div id="nav">
+						<button class="btn">图书首页</button>
+						<button class="btn">图书管理</button>
+						<button class="btn">借阅管理</button>
+					</div>
+				</div>
+				<div class="top">
+					<!-- <p>顶部</p> -->
+				</div>
+				<div class="content show">
+					
+				</div>
+				
+				
+				<div  class="content">
+					<div id="app">
+						<div id="div3">
+							<div class="query">
+								<p class="p1">关键字查找:<input class="input1" type="text" placeholder="请输入关键字" v-model="keywords"></p>
+							</div>
+						</div>
+						
+						
+						<div id="div1">
+							<table class="table1">
+								<tr>
+									<td>序号</td>
+									<td>书名</td>
+									<td>作者</td>
+									<td>时间</td>
+									<td>价格</td>
+									<td>操作</td>
+								</tr>
+								<tr v-for="(book,index) in books_result">
+									<td>{{index+1}}</td>
+									<td>{{book.name}}</td>
+									<td>{{book.author}}</td>
+									<td>{{book.date | dateformat}}</td>
+									<td>{{book.price}}</td>
+									<td>
+										<button class="button1" @click="updatebook(book)">修改</button> |
+										<button class="button1" @click="delbook(index)">删除</button>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6">书本总数:<span>{{total}}</span></td>
+								</tr>
+							</table>
+						
+						<table class="table2">
+							<td>
+								<p>添加/修改书籍</p>
+								
+								<p>书名:<input type="text" v-model="name" /></p>
+								<p>作者:<input type="text" v-model="author" /></p>
+								<p>价格:<input type="number" v-model="price" /></p>
+								<p><button class="button1" @click="updbook()">修改</button>|<button class="button1" @click="add()">添加</button></p>
+								
+							</td>
+						</table>
+						</div>
+						
+					</div>
+				</div>
+				<div class="content">
+					
+					<div id="app2">
+						<div id="div3">
+							<div class="query">
+								<p class="p1">关键字查找:<input class="input1" type="text" placeholder="请输入关键字" v-model="keywords"></p>
+							</div>
+						</div>
+						
+						
+						<div id="div1">
+							<table class="table1">
+								<tr>
+									<td>序号</td>
+									<td>姓名</td>
+									<td>学号</td>
+									<td>借阅书本</td>
+									<td>是否归还</td>
+									<td>操作</td>
+								</tr>
+								<tr v-for="(stu,index) in stus_result">
+									<td>{{index+1}}</td>
+									<td>{{stu.sname}}</td>
+									<td>{{stu.sno}}</td>
+									<td>{{stu.bbook}}</td>
+									<td>{{stu.state}}</td>
+									<td>
+										<button class="button1" @click="updatestu(stu)">修改</button> |
+										<button class="button1" @click="delstu(index)">删除</button>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="6">借阅人总数:<span>{{total}}</span></td>
+								</tr>
+							</table>
+							<table class="table2">
+								<td>
+									<p>添加/修改借阅者</p>								
+									<p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:<input type="text" v-model="sname" /></p>
+									<p>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号:<input type="text" v-model="sno" /></p>
+									<p>借阅书本:<input type="text" v-model="bbook" /></p>
+									<p>是否归还:<input type="text" v-model="state" /></p>
+									
+									<p><button class="button1" @click="updstu()">修改</button>|<button class="button1" @click="addstu()">添加</button></p>
+									
+								</td>
+							</table>
+						</div>
+	
+					</div>
+				</div>
+				
+			</div>
+			
+		<script>
+			var app2 = new Vue({
+				el:"#app2",
+				data:{
+					flag:false,
+					sname:"",
+					sno:"",
+					bbook:"",
+					state:"",	
+					keywords:"",
+					stus:[
+						{sname:"张三",sno:"2008314210",bbook:"三国演义",state:"未归还"},
+						{sname:"李四",sno:"2008314330",bbook:"水浒传",state:"未归还"},
+						{sname:"胡苗子",sno:"2008312350",bbook:"红楼梦",state:"未归还"},
+						{sname:"王五",sno:"2008312290",bbook:"西游记",state:"未归还"},
+					],
+				},
+				computed:{
+					total:function(){
+						return this.stus.length
+					},
+					
+					stus_result(){
+						var _this = this;
+						if(this.keywords){
+							let querystu = this.stus.filter(function(items){
+								if(items.sname.indexOf(_this.keywords)>=0 || items.bbook.indexOf(_this.keywords)>=0){
+									return true
+								}else{
+									return false
+								}
+							})
+							return querystu
+						}else{
+							return this.stus
+						}
+					}
+					
+				},
+				methods:{
+					delstu(index){
+						if(window.confirm('确认要删除？')){
+							this.stus.splice(index,1);
+						}
+					},
+					updatestu(stu){
+						this.updateStu = stu;
+						this.sname = this.updateStu.sname;
+						this.sno = this.updateStu.sno;
+						this.bbook = this.updateStu.bbook;
+						this.state = this.updateStu.state;
+						this.flag = true;
+					},
+					updstu() {
+						this.updateStu.sname = this.sname;
+						this.updateStu.sno = this.sno;
+						this.updateStu.bbook = this.bbook;
+						this.updateStu.state = this.state;
+						
+						this.flag = false;
+						this.updateStu = {};
+						
+						this.sname = '';
+						this.sno = '';
+						this.bbook = '';
+						this.state = '';
+					},
+					addstu(){
+						var newstu = new Object;
+						if(this.sname.length != 0 && this.sno.length != 0 && this.bbook.length != 0 && this.state.length != 0){
+							newstu.sname = this.sname;
+							newstu.sno = this.sno;
+							newstu.bbook = this.bbook;
+							newstu.state = this.state;
+							
+							this.stus.push(newstu);
+							
+							this.sname="";
+							this.sno="";
+							this.bbook="";
+							this.state="";
+						}else{
+							alert('请填写完整');
+						}
+					}
+					
+				}
+				
+			})
+		
+		</script>
+		<script>
+			var app = new Vue({
+				el:'#app',
+				data:{
+					updatedBook: {},
+					flag:false,
+					name:"",
+					author:"",
+					price:"",
+					keywords:"",
+					books:[
+						{name:"三国演义",author:"罗贯中",date:new Date(),price:25},
+						{name:"水浒传",author:"施耐庵",date:new Date(),price:30},
+						{name:"西游记",author:"吴承恩",date:new Date(),price:28},
+						{name:"红楼梦",author:"曹雪芹",date:new Date(),price:26}
+					],
+				},
+				filters:{
+					dateformat(val){
+						return val.getFullYear()+"-"+(val.getMonth()+1)+"-"+val.getDate()
+					}
+				},
+				methods:{
+					delbook(index){
+						if(window.confirm('确认要删除？')){
+						    this.books.splice(index, 1);
+						   }
+					},
+					add(){
+						var newbook = new Object();
+						// 判断
+						if(this.name.length != 0 && this.author.length !=0 && this.price.length !=0){
+							newbook.name=this.name;
+							newbook.author=this.author;
+							newbook.date=new Date();
+							newbook.price=this.price;
+							// 把当前的数据放入数组中
+							this.books.push(newbook);
+							// 清空数据
+							this.name="";
+							this.author="";
+							this.price="";
+						}else{
+							alert("不能为空")
+						}
+					},
+					updatebook(book) {
+						this.updatedBook = book;
+						this.name = this.updatedBook.name;
+						this.author = this.updatedBook.author;
+						this.price = this.updatedBook.price;
+						this.flag = true;
+					},
+					updbook() {
+						this.updatedBook.name = this.name;
+						this.updatedBook.author = this.author;
+						this.updatedBook.price = this.price;
+						
+						this.flag = false;
+						this.updatedBook = {};
+						
+						this.name = '';
+						this.author = '';
+						this.price = '';
+					},
+				},
+				computed:{
+				    total:function(){
+				        return this.books.length
+				    },
+					
+					
+					books_result() {
+					  var _this = this;
+					  if (this.keywords) {
+					 //this的作用域到此结束，无法穿透进入filter函数,所以需要用一个变量（比如_this）来保存this的指向。
+					
+					    // 下面的参数item指的是其中一条图书的搜索记录
+					    let querybooks = this.books.filter(function (item) {
+					      if (item.name.indexOf(_this.keywords) >= 0 || item.author.indexOf(_this.keywords) >= 0) {
+					        //找到输入的关键词对应的书名的索引，存在则>=0,不存在则返回-1
+					        return true
+					      } else {
+					        return false
+					      }
+					    })
+					
+					    return querybooks
+					  } else {
+					    return this.books //没有关键词就显示所有的数据
+					  }
+					}
+					
+					
+				},
+				
+		
+			})
+		</script>
+		<script>　　　　　//获取页面的每个按钮
+		        var btns = document.getElementsByClassName("btn")　　　　　//获取内容盒子
+		        var contents = document.getElementsByClassName("content")
+		　　　　　//遍历每个按钮为其添加点击事件
+		        for(var i=0;i<btns.length;i++){
+		            btns[i].index = i;
+		            btns[i].onclick = function(){　　　　　　　　　　//对当前点击的按钮赋予active类名及显示当前按钮对应的内容
+		                for(var j=0;j<btns.length;j++){
+		                    btns[j].className = btns[j].className.replace(' active', '').trim();
+		                    contents[j].className = contents[j].className.replace(' show', '').trim();
+		                }
+		                this.className = this.className + ' active';
+		                contents[this.index].className = contents[this.index].className + ' show';
+		            };
+		        }
+		    </script>
+	</body>
+</html>
