@@ -72,26 +72,8 @@ def add():
     }
     return jsonify(resp)
 
-@app.route("/update",methods=["POST"])
-def update():
-    try:
-        id = request.form.get("id","default id")
-        name=request.form.get("name","default name")
-        session=sessionmaker(bind=db,expire_on_commit=false)()
-        lib = session.query(Lib).filter(Lib.id==id).first()
-        print(lib)
-        lib.name = name
-        session.commit()
-    except Exception as e:
-        print(e)
-        return "update err"
-    return "success"
 
-@app.route("/delete",methods=[])
-def delete():
-    lib = Lib.query.all()
-    db.session.delete(rd)
-    db.session.commit
+
 
 
 
